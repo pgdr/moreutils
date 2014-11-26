@@ -1,5 +1,8 @@
 #!/usr/bin/make -f
 
+DPKG_EXPORT_BUILDFLAGS=1
+include /usr/share/dpkg/buildflags.mk
+
 # Prevent the makefile from stripping, in case it's being built in
 # unstripped mode.
 export INSTALL_BIN=install

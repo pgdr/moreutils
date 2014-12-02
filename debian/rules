@@ -9,3 +9,7 @@ export INSTALL_BIN=install
 
 %:
 	dh $@
+
+override_dh_installchangelogs:
+	dh_installchangelogs
+	install -D debian/changelog.upstream debian/moreutils/usr/share/doc/moreutils/changelog

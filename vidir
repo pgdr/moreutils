@@ -188,7 +188,7 @@ while (<IN>) {
 			else {
 				if (-d $name) {
 					foreach (values %item) {
-						s/^\Q$src\E/$name/;
+						s,^\Q$src\E($|/),$name$1,;
 					}
 				}
 				if ($verbose) {

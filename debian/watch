@@ -1,0 +1,4 @@
+version=3
+
+opts=downloadurlmangle=s/^.*version_(.*)\//http:\/\/ftp.debian.org\/debian\/pool\/main\/m\/moreutils\/moreutils_$1.orig.tar.gz/,filenamemangle=s/version_(.+)\/$/moreutils_$1.orig.tar.gz/ \
+http://joeyh.name/code/moreutils/news/ ^.*version_(.+)/

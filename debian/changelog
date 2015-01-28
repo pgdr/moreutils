@@ -1,15 +1,10 @@
-moreutils (0.54-1) unstable; urgency=medium
+moreutils (0.54) unstable; urgency=medium
 
-  * Set debhelper compat to 9.
-  * Remove unused lines from debian/rules.
-  * New maintainer (Closes: #768529).
-  * Update copyright.
-  * Set source format to '3.0 (quilt)'.
-  * Update Standards-Version to 3.9.6 (no changes required).
-  * New upstream version (0.54).
-    Includes a vidir bug fix (Closes: #654326).
+  * vidir: Fix bug in handling filenames that share a common
+    prefix when renaming. Closes: #654326
+    Thanks, Kushal Kumaran
 
- -- Nicolas Schier <nicolas@hjem.rpa.no>  Tue,  2 Dec 2014 04:58:04 +0100
+ -- Joey Hess <id@joeyh.name>  Fri, 28 Nov 2014 11:25:32 -0400
 
 moreutils (0.53) unstable; urgency=medium
 

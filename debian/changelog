@@ -1,3 +1,15 @@
+moreutils (0.55-1) experimental; urgency=medium
+
+  * New upstream release:
+    * parallel: serialise output through internal pipe (Closes: #704125).
+    * sponge: add append option '-a' (Closes: #623197),
+      thanks, Michael Stummvoll.
+    * sponge: make '-a' atomically, if possible.
+    * copyright and URL updates.
+  * Add preliminary watch file (download does not work).
+
+ -- Nicolas Schier <nicolas@hjem.rpa.no>  Wed, 28 Jan 2015 08:48:55 +0100
+
 moreutils (0.54-1) unstable; urgency=medium
 
   * Set debhelper compat to 9.

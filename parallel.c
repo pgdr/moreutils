@@ -40,6 +40,9 @@
 #define WEXITED 0
 #endif
 
+static pid_t pipe_child_stdout = 0;
+static pid_t pipe_child_stderr = 0;
+
 void usage() {
 	printf("parallel [OPTIONS] command -- arguments\n\tfor each argument, "
 	       "run command with argument, in parallel\n");
@@ -47,10 +50,28 @@ void usage() {
 	exit(1);
 }
 
-void exec_child(char **command, char **arguments, int replace_cb, int nargs) {
+static void redirect(int fd, int target_fd, const char *name)
+{
+	if (fd == target_fd)
+		return;
+
+	if (dup2(fd, target_fd) < 0) {
+		fprintf(stderr, "unable to open %s from internal pipe: %s\n",
+			name, strerror(errno));
+		exit(1);
+	}
+	close(fd);
+}
+
+void exec_child(char **command, char **arguments, int replace_cb, int nargs,
+		int stdout_fd, int stderr_fd)
+{
 	if (fork() != 0) {
 		return;
 	}
+
+	redirect(stdout_fd, 1, "stdout");
+	redirect(stderr_fd, 2, "stderr");
 
 	if (command[0]) {
 		char **argv;
@@ -106,6 +127,64 @@ int wait_for_child(int options) {
 	return 1;
 }
 
+static int pipe_child(int fd, int orig_fd)
+{
+	const char *fd_info = (orig_fd == 1) ? "out" : "err";
+	char buf[4096];
+	int r;
+
+	while ((r = read(fd, buf, sizeof(buf))) >= 0) {
+		int w;
+		int len;
+
+		len = r;
+
+		do {
+			w = write(orig_fd, buf, len);
+			if (w < 0) {
+				fprintf(stderr, "unable to write to std%s: "
+					"%s\n", fd_info, strerror(errno));
+				exit(1);
+			}
+
+			len -= w;
+		} while (len > 0);
+	}
+
+	fprintf(stderr, "unable to read from std%s: %s\n", fd_info,
+		strerror(errno));
+	exit(1);
+}
+
+pid_t create_pipe_child(int *fd, int orig_fd)
+{
+	int fds[2];
+	pid_t pid;
+
+	if (pipe(fds)) {
+		fprintf(stderr, "unable to create pipe: %s\n",
+			strerror(errno));
+		exit(1);
+	}
+
+	*fd = fds[1];
+
+	pid = fork();
+	if (pid < 0) {
+		fprintf(stderr, "unable to fork: %s\n", strerror(errno));
+		return pid;
+	}
+
+	if (pid) {
+		close(fds[0]);
+		return pid;
+	}
+
+	close(fds[1]);
+
+	return pipe_child(fds[0], orig_fd);
+}
+
 int main(int argc, char **argv) {
 	int maxjobs = -1;
 	int curjobs = 0;
@@ -119,6 +198,8 @@ int main(int argc, char **argv) {
 	int cidx = 0;
 	int returncode = 0;
 	int replace_cb = 0;
+	int stdout_fd = 1;
+	int stderr_fd = 2;
 	char *t;
 
 	while ((argv[optind] && strcmp(argv[optind], "--") != 0) &&
@@ -205,6 +286,12 @@ int main(int argc, char **argv) {
 		exit(2);
 	}
 
+	pipe_child_stdout = create_pipe_child(&stdout_fd, 1);
+	pipe_child_stderr = create_pipe_child(&stderr_fd, 2);
+
+	if ((pipe_child_stdout < 0) || (pipe_child_stderr < 0))
+		exit(1);
+
 	while (argidx < arglen) {
 		double load;
 
@@ -216,7 +303,8 @@ int main(int argc, char **argv) {
 			if (argsatonce > arglen - argidx)
 				argsatonce = arglen - argidx;
 			exec_child(command, arguments + argidx,
-				   replace_cb, argsatonce);
+				   replace_cb, argsatonce, stdout_fd,
+				   stderr_fd);
 			argidx += argsatonce;
 			curjobs++;
 		}
@@ -240,6 +328,15 @@ int main(int argc, char **argv) {
 	while (curjobs > 0) {
 		returncode |= wait_for_child(0);
 		curjobs--;
+	}
+
+	if (pipe_child_stdout) {
+		kill(pipe_child_stdout, SIGKILL);
+		wait_for_child(0);
+	}
+	if (pipe_child_stderr) {
+		kill(pipe_child_stderr, SIGKILL);
+		wait_for_child(0);
 	}
 
 	return returncode;

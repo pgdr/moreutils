@@ -1,3 +1,12 @@
+moreutils (0.55) unstable; urgency=medium
+
+  * parallel: serialise output through internal pipe. Closes: #704125
+    Thanks, Nicolas Schier.
+  * sponge: add append option '-a'. Closes: #623197
+    Thanks, Nicolas Schier.
+
+ -- Joey Hess <id@joeyh.name>  Mon, 19 Jan 2015 13:58:08 -0400
+
 moreutils (0.54) unstable; urgency=medium
 
   * vidir: Fix bug in handling filenames that share a common

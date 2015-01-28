@@ -13,7 +13,7 @@ Written by Joey Hess
 <refentry>
 	<refentryinfo>
 		<address>
-			<email>joey@kitenet.net</email>
+			<email>id@joeyh.name</email>
 		</address>
 		<author>
 			<firstname>Joey</firstname>
@@ -146,6 +146,20 @@ Written by Joey Hess
 	command ran, ORed together. (Thus, if any one command
 	exits nonzero, <command>parallel</command> as a whole will exit nonzero.)</para>
 		
+	</refsect1>
+
+	<refsect1>
+		<title>NOTES</title>
+
+	<para>
+		All output to stdout and stderr is serialised through a
+		corresponding internal pipe, in order to prevent annoying
+		concurrent output behaviour.  Note that serialisation is not
+		done on any other file descriptors and file position based
+		access to a nonstandard file descriptor might have unexpected
+		results.
+	</para>
+
 	</refsect1>
 	
 	<refsect1>

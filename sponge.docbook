@@ -48,7 +48,7 @@ USA
 
 	<refsynopsisdiv>
 		<cmdsynopsis>
-			<command>sed '...' file | grep '...' | sponge file</command>
+			<command>sed '...' file | grep '...' | sponge [-a] file</command>
 		</cmdsynopsis>
 	</refsynopsisdiv>
 
@@ -57,20 +57,52 @@ USA
 		
 		<para><command>sponge</command> reads standard input and
 			writes it out to the specified file. Unlike a shell
-			redirect, sponge soaks up all its input before
-			opening the output file. This allows constructing
+			redirect, <command>sponge</command> soaks up all its input before
+			writing the output file. This allows constructing
 			pipelines that read from and write to
-			the same file.</para>
+			the same file.
+		</para>
 		<para>
-			It also creates the output file
-			atomically by renaming a temp file into place,
-			and preserves the permissions of the output file
+			<command>sponge</command> preserves the
+			permissions of the output file
 			if it already exists.
+		</para>
+		<para>
+			When possible, <command>sponge</command> creates or updates the
+			output file atomically by renaming a temp
+			file into place. (This cannot be done
+			if TMPDIR is not in the same filesystem.)
+		</para>
+		<para>
 			If the output file is a special file or symlink,
-			the data will be written to it.</para>
-		<para>If no output file is specified, sponge outputs to
-			stdout.</para>
+			the data will be written to it, non-atomically.
+		</para>
+		<para>
+			If no file is specified, <command>sponge</command> outputs to
+			stdout.
+		</para>
+	</refsect1>
 
+	<refsect1>
+		<title>OPTIONS</title>
+
+		<variablelist>
+
+		<varlistentry>
+			<term><option>-a</option></term>
+			<listitem>
+				<para>
+					Replace the file
+					with a new file that contains
+					the file's original content,
+					with the standard input
+					appended to it. This is done
+					atomically when possible.
+				</para>
+			</listitem>
+		</varlistentry>
+
+		</variablelist>
 	</refsect1>
 	
 	<refsect1>

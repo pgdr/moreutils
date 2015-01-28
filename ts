@@ -40,7 +40,7 @@ are assumed to be in, if a timezone is not specified as part of the date.
 
 =head1 AUTHOR
 
-Copyright 2006 by Joey Hess <joey@kitenet.net>
+Copyright 2006 by Joey Hess <id@joeyh.name>
 
 Licensed under the GNU GPL.
 

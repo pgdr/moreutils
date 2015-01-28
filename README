@@ -17,11 +17,11 @@ vidir: edit a directory in your text editor
 vipe: insert a text editor into a pipe
 zrun: automatically uncompress arguments to command
 
-Its web page is here: http://kitenet.net/~joey/code/moreutils/
+Its web page is here: http://joeyh.name/code/moreutils/
 
 Your suggestions of additional tools to add to this collection are
 appreciated. The web page lists some that are under consideration but
 have not yet been included, I also welcome feedback on which of these to
 include.
 
--- Joey Hess <joey@kitenet.net>
+-- Joey Hess <id@joeyh.name>

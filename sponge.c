@@ -34,6 +34,7 @@
 /* SIZE_MAX */
 #include <stdint.h> 
 #include <signal.h>
+#include <getopt.h>
 
 #include "physmem.c"
 
@@ -42,7 +43,8 @@
 char *tmpname = NULL;
 
 void usage() {
-	printf("sponge <file>: soak up all input from stdin and write it to <file>\n");
+	printf("sponge [-a] <file>: soak up all input from stdin and write it "
+	       "to <file>\n");
 	exit(0);
 }
 
@@ -207,21 +209,25 @@ static void write_buff_out (char* buff, size_t length, FILE *fd) {
 	}
 }
 
-static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
+static void copy_file (FILE *infile, FILE *outfile, char *buf, size_t size) {
 	ssize_t i;
-	if (lseek(fileno(tmpfile), 0, SEEK_SET)) {
-		perror("could to seek to start of temporary file");
-		fclose(tmpfile);
-		exit(1);
-	}
-	while ((i = read(fileno(tmpfile), buf, size)) > 0) {
+	while ((i = read(fileno(infile), buf, size)) > 0) {
 		write_buff_out(buf, i, outfile);
 	}
 	if (i == -1) {
-		perror("read temporary file");
+		perror("read file");
+		fclose(infile);
+		exit(1);
+	}
+}
+
+static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
+	if (lseek(fileno(tmpfile), 0, SEEK_SET)) {
+		perror("could to seek to start of file");
 		fclose(tmpfile);
 		exit(1);
 	}
+	copy_file(tmpfile, outfile, buf, size);
 	if (fclose(tmpfile) != 0) {
 		perror("read temporary file");
 		exit(1);
@@ -278,14 +284,21 @@ int main (int argc, char **argv) {
 	ssize_t i = 0;
 	size_t mem_available = default_sponge_size();
 	int tmpfile_used=0;
+	int append=0;
+	int opt;
 
-	if (argc > 2 || (argc == 2 && strcmp(argv[1], "-h") == 0)) {
-		usage();
+	while ((opt = getopt(argc, argv, "ha")) != -1) {
+		switch (opt) {
+			case 'h':
+				usage();
+				break;
+			case 'a':
+				append=1;
+		}
 	}
-	if (argc == 2) {
-		outname = argv[1];
-	}
-				
+	if (optind < argc)
+		outname = argv[optind];
+	
 	tmpfile = open_tmpfile();
 	bufstart = buf = malloc(bufsize);
 	if (!buf) {
@@ -320,6 +333,18 @@ int main (int argc, char **argv) {
 		mode_t mode;
 		struct stat statbuf;
 		int exists = (lstat(outname, &statbuf) == 0);
+		int regfile = exists && S_ISREG(statbuf.st_mode) && ! S_ISLNK(statbuf.st_mode);
+
+		if (append && regfile) {
+			char *tmpbuf = malloc(bufsize);
+			if (!tmpbuf) {
+				perror("failed to allocate memory");
+				exit(1);
+			}
+			outfile = fopen(outname, "r");
+			copy_file(outfile, tmpfile, tmpbuf, bufsize);
+			fclose(outfile);
+		}
 		
 		write_buff_tmp_finish(bufstart, bufused, tmpfile);
 
@@ -341,16 +366,13 @@ int main (int argc, char **argv) {
 
 		/* If it's a regular file, or does not yet exist,
 		 * attempt a fast rename of the temp file. */
-		if (((exists &&
-		      S_ISREG(statbuf.st_mode) &&
-		      ! S_ISLNK(statbuf.st_mode)
-		     ) || ! exists) &&
+		if ((regfile || ! exists) &&
 		    rename(tmpname, outname) == 0) {
 			tmpname=NULL; /* don't try to cleanup tmpname */
 		}
 		else {	
 			/* Fall back to slow copy. */
-			outfile = fopen(outname, "w");
+			outfile = fopen(outname, append ? "a" : "w");
 			if (!outfile) {
 				perror("error opening output file");
 				exit(1);

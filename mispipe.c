@@ -114,7 +114,7 @@ static void subprocess2(const char* cmd) {
 	if (close(filedes[1]))
 		error_with_errno("Failed (in child) closing filedes[1]");
 	/* Do the second command, and throw away the exit status. */
-	system(cmd);
+	if (system(cmd)) {}
 	/* Close the standard input. */
 	if (close(0))
 		error_with_errno("Failed (in child) closing standard output "

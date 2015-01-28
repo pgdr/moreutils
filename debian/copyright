@@ -2,7 +2,7 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Source: Contributed by many folks.
 
 Files: *
-Copyright: 2006-2014 Joey Hess <joeyh@debian.org>
+Copyright: 2006-2015 Joey Hess <id@joeyh.name>
 License: GPL-2+
 
 Files: isutf8.*

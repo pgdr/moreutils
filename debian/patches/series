@@ -1,2 +1,3 @@
 0001-errno.docbook-fix-typo.patch
 0002-ifdata-consistent-error-message-on-non-exist-netdev.patch
+0003-vidir--create-missing-target-directory.patch

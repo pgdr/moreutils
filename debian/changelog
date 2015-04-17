@@ -1,6 +1,8 @@
 moreutils (0.55-2) experimental; urgency=medium
 
+  * errno.docbook: fix typo (Closes: #749399) (upstream patch)
   * ifdata: descriptive non-exist netdev error msg (Closes: #386754)
+    (upstream patch)
   * vidir: Create missing target directories (Closes: #728688)
 
  -- Nicolas Schier <nicolas@hjem.rpa.no>  Fri, 17 Apr 2015 05:32:21 +0200

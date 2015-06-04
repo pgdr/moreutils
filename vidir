@@ -76,6 +76,8 @@ Licensed under the GNU GPL.
 
 =cut
 
+use File::Basename;
+use File::Path qw(make_path);
 use File::Spec;
 use File::Temp;
 use Getopt::Long;
@@ -152,7 +154,8 @@ while (<IN>) {
 		elsif ($name ne $item{$num}) {
 			next unless length $name;
 			my $src=$item{$num};
-			
+			my $dir=dirname($name);
+
 			if (! (-e $src || -l $src) ) {
 				print STDERR "$0: $src does not exist\n";
 				delete $item{$num};
@@ -181,7 +184,13 @@ while (<IN>) {
 				}
 			}
 
-			if (! rename($src, $name)) {
+			if ((! -d $dir) && (! make_path($dir, {
+							verbose => $verbose,
+						}))) {
+				print STDERR "$0: failed to create directory tree $dir: $!\n";
+				$error=1;
+			}
+			elsif (! rename($src, $name)) {
 				print STDERR "$0: failed to rename $src to $name: $!\n";
 				$error=1;
 			}

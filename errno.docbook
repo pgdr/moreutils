@@ -79,7 +79,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		errno codes, and the corresponding descriptions. For example,
 		if given <literal>ENOENT</literal> on a Linux system, it
 		prints out the code 2 and the description "No such file or directory".
-		If given the code 2, it printes <literal>ENOENT</literal>
+		If given the code 2, it prints <literal>ENOENT</literal>
 		and the same description.</para>
 		
 	</refsect1>

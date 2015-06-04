@@ -1,3 +1,13 @@
+moreutils (0.56) unstable; urgency=medium
+
+  * ifdata: Fix error messages when a non-existent network interface
+    is queried. Closes: #386754 Thanks, Nicolas Schier
+  * errno.docbook: Fix typo. Closes: #749399
+  * vidir: Create missing target directories. Closes: #728688
+    Thanks, Nicolas Schier
+
+ -- Joey Hess <id@joeyh.name>  Wed, 03 Jun 2015 12:03:50 -0400
+
 moreutils (0.55) unstable; urgency=medium
 
   * parallel: serialise output through internal pipe. Closes: #704125

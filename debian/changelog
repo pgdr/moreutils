@@ -1,3 +1,15 @@
+moreutils (0.56-1) unstable; urgency=medium
+
+  * New upstream version:
+    * ifdata: Fix error messages when a non-existent network interface
+      is queried. Closes: #386754
+    * errno.docbook: Fix typo. Closes: #749399
+    * vidir: Create missing target directories. Closes: #728688
+  * All patches applied upstream
+  * Upload to unstable
+
+ -- Nicolas Schier <nicolas@hjem.rpa.no>  Thu, 04 Jun 2015 04:37:11 +0200
+
 moreutils (0.55-2) experimental; urgency=medium
 
   * errno.docbook: fix typo (Closes: #749399) (upstream patch)

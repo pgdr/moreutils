@@ -1,4 +1,3 @@
-#include <error.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -129,9 +128,10 @@ static int do_socket_ioctl(const char *ifname, const unsigned long int request,
 		if (ioctl_errno)
 			*ioctl_errno = errno;
 		if (print_error == PRINT_ERROR) {
-			if (errno == ENODEV)
-				error(EXIT_FAILURE, 0,
-				      "No such network interface: %s", ifname);
+			if (errno == ENODEV) {
+				fprintf(stderr, "No such network interface: %s\n", ifname);
+				exit(1);
+			}
 			else
 				fprintf(stderr, "ioctl on %s: %s\n", ifname,
 					strerror(errno));
@@ -391,9 +391,10 @@ void please_do(int ndo, int *todo, const char *ifname) {
 	// printf("I have %d items in my queue.\n",ndo);
 	for (i=0; i<ndo; i++) {
 		if (!exists &&
-		    (todo[i] != DO_EXISTS) && (todo[i] != DO_PEXISTS))
-			error(EXIT_FAILURE, 0, "No such network interface: %s",
-			      ifname);
+		    (todo[i] != DO_EXISTS) && (todo[i] != DO_PEXISTS)) {
+			fprintf(stderr, "No such network interface: %s\n", ifname);
+			exit(1);
+		}
 
 		switch (todo[i]) {
 			case DO_EXISTS:

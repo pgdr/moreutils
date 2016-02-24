@@ -49,6 +49,7 @@ Licensed under the GNU GPL.
 use warnings;
 use strict;
 use POSIX q{strftime};
+no warnings 'utf8';
 
 $|=1;
 

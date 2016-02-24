@@ -1,3 +1,11 @@
+moreutils (0.58-1) unstable; urgency=medium
+
+  * New upstream version (0.58):
+    + OpenBSD compile fix.
+    + ts: Quiet perl's complaints about utf-8. Closes: #812143
+
+ -- Nicolas Schier <nicolas@hjem.rpa.no>  Tue, 01 Mar 2016 11:43:24 +0100
+
 moreutils (0.57-1) unstable; urgency=medium
 
   * New upstream version (0.57); no functional changes.

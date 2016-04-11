@@ -1,3 +1,13 @@
+moreutils (0.59-1) unstable; urgency=medium
+
+  * New upstream version (0.59):
+    chronic: New options -v (stdout/stderr verbosity) and -e (display any
+    stderr, not just on non-null return value)
+  * debian/copyright: update copyright year
+  * debian/control: bump standards to 3.9.8 (no changes required)
+
+ -- Nicolas Schier <nicolas@hjem.rpa.no>  Mon, 11 Apr 2016 07:25:42 +0200
+
 moreutils (0.58-1) unstable; urgency=medium
 
   * New upstream version (0.58):

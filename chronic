@@ -6,7 +6,7 @@ chronic - runs a command quietly unless it fails
 
 =head1 SYNOPSIS
 
-chronic COMMAND...
+chronic [-ev] COMMAND...
 
 =head1 DESCRIPTION
 
@@ -20,13 +20,30 @@ accidental output when it succeeds, and not verbose enough output when it
 fails, you can just run it verbosely always, and use chronic to hide
 the successful output.
 
-	0 1 * * * chronic backup # instead of backup >/dev/null 2>&1
+	0    1 * * * chronic backup # instead of backup >/dev/null 2>&1
+	*/20 * * * * chronic -ve my_script # verbose for debugging
+
+=head1 OPTIONS
+
+=over 4
+
+=item -v
+
+Verbose output (distinguishes between STDOUT and STDERR, also reports RETVAL)
+
+=item -e
+
+Stderr triggering. Triggers output when stderr output length is non-zero.
+Without -e chronic needs non-zero return value to trigger output.
+
+=back
 
 =head1 AUTHOR
 
 Copyright 2010 by Joey Hess <id@joeyh.name>
 
 Original concept and "chronic" name by Chuck Houpt.
+Code for verbose and stderr trigger by Tomas 'Harvie' Mudrunka 2016.
 
 Licensed under the GNU GPL version 2 or higher.
 
@@ -35,6 +52,11 @@ Licensed under the GNU GPL version 2 or higher.
 use warnings;
 use strict;
 use IPC::Run qw( start pump finish timeout );
+use Getopt::Std;
+
+our $opt_e = 0;
+our $opt_v = 0;
+getopts('ev'); # only looks at options before the COMMAND
 
 if (! @ARGV) {
 	die "usage: chronic COMMAND...\n";
@@ -53,11 +75,18 @@ elsif ($ret != 0) { # child killed by signal
 	showout();
 	exit 1;
 }
+elsif ($opt_e && (length($err) > 0)) {
+	showout();
+	exit 2;
+}
 else {
 	exit 0;
 }
 
 sub showout {
+	print "STDOUT:\n" if $opt_v;
 	print STDOUT $out;
+	print "\nSTDERR:\n" if $opt_v;
 	print STDERR $err;
+	print "\nRETVAL: ".($ret >> 8)."\n" if $opt_v;
 }

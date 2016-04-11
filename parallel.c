@@ -31,6 +31,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <signal.h>
 
 #ifdef __sun
 # include <sys/loadavg.h> /* getloadavg() */

@@ -4,8 +4,9 @@ MANS=sponge.1 vidir.1 vipe.1 isutf8.1 ts.1 combine.1 ifdata.1 ifne.1 pee.1 zrun.
 CFLAGS?=-O2 -g -Wall
 INSTALL_BIN?=install -s
 PREFIX?=/usr
+DOCBOOKXSL?=/usr/share/xml/docbook/stylesheet/docbook-xsl
 
-DOCBOOK2XMAN=xsltproc --param man.authors.section.enabled 0 /usr/share/xml/docbook/stylesheet/docbook-xsl/manpages/docbook.xsl
+DOCBOOK2XMAN=xsltproc --param man.authors.section.enabled 0 $(DOCBOOKXSL)/manpages/docbook.xsl
 
 all: $(BINS) $(MANS)
 

@@ -6,7 +6,7 @@ ts - timestamp input
 
 =head1 SYNOPSIS
 
-ts [-r] [-i | -s] [format]
+ts [-r] [-i | -s] [-m] [format]
 
 =head1 DESCRIPTION
 

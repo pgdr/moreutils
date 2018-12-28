@@ -100,7 +100,7 @@ if ($mono) {
 	my $raw_time = Time::HiRes::clock_gettime(CLOCK_MONOTONIC);
 	$lastseconds = time;
 	$lastmicroseconds = int(1000000 * ($raw_time - int($raw_time)));
-	$monodelta = time - int($raw_time);
+	$monodelta = $lastseconds - int($raw_time);
 }
 elsif ($hires) {
 	($lastseconds, $lastmicroseconds) = Time::HiRes::gettimeofday();
@@ -118,8 +118,9 @@ while (<>) {
 			my $microseconds;
 			if ($mono) {
 				my $raw_time =
-					Time::HiRes::clock_gettime(CLOCK_MONOTONIC);
-				$seconds = $monodelta + int($raw_time);
+					Time::HiRes::clock_gettime(CLOCK_MONOTONIC) +
+					$monodelta;
+				$seconds = int($raw_time);
 				$microseconds = int(1000000 * ($raw_time - $seconds));
 			}
 			else {

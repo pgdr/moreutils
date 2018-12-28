@@ -28,11 +28,11 @@ dates is not supported.
 If both -r and a format is passed, the existing timestamps are
 converted to the specified format.
 
-If the -i or -s switch is passed, ts timestamps incrementally instead. In case
-of -i, every timestamp will be the time elapsed since the last timestamp. In
-case of -s, the time elapsed since start of the program is used.
-The default format changes to "%H:%M:%S", and "%.S" and "%.s" can be used
-as well.
+If the -i or -s switch is passed, ts reports incremental timestamps instead of
+absolute ones. The default format changes to "%H:%M:%S", and "%.S" and "%.s" can
+be used as well. In case of -i, every timestamp will be the time elapsed since
+the last timestamp. In case of -s, the time elapsed since start of the program
+is used.
 
 The -m switch makes the system's monotonic clock be used.
 

@@ -1,4 +1,4 @@
-moreutils (0.63) UNRELEASED; urgency=medium
+moreutils (0.63) unstable; urgency=medium
 
   * vipe: Clean up temp file even when it exits with an error.
     Thanks, Stig Palmquist.
@@ -7,7 +7,7 @@ moreutils (0.63) UNRELEASED; urgency=medium
   * sponge: Fix bug in -a mode that doubled original content of file when
     the temp file is located on a different filesystem.
 
- -- Joey Hess <id@joeyh.name>  Wed, 22 Aug 2018 21:00:58 -0400
+ -- Joey Hess <id@joeyh.name>  Wed, 09 Jan 2019 11:14:01 -0400
 
 moreutils (0.62) unstable; urgency=medium
 

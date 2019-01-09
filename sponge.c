@@ -372,7 +372,7 @@ int main (int argc, char **argv) {
 		}
 		else {	
 			/* Fall back to slow copy. */
-			outfile = fopen(outname, append ? "a" : "w");
+			outfile = fopen(outname, "w");
 			if (!outfile) {
 				perror("error opening output file");
 				exit(1);

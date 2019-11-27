@@ -328,7 +328,7 @@ int main(int argc, char **argv) {
 	}
 	
 	if (replace_cb && argsatonce > 1) {
-		fprintf(stderr, "options -i and -n are incomaptible\n");
+		fprintf(stderr, "options -i and -n are incompatible\n");
 		exit(2);
 	}
 

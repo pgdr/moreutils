@@ -38,13 +38,13 @@ SONAME = $(LINKERNAME).$(VERSION)
 REALNAME = $(SONAME).$(MINOR).$(RELEASE)
 
 CC = gcc
-CFLAGS = -O3 -Wextra -Wall -ansi -Wstrict-prototypes
+CFLAGS ?= -O3 -Wextra -Wall -ansi -Wstrict-prototypes
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
 
 IS_UTF8_LIB:
-	$(CC) --shared -fPIC $(CFLAGS) $(LIB_SRC) -o $(LINKERNAME)
+	$(CC) --shared -fPIC $(CFLAGS) $(LDFLAGS) $(LIB_SRC) -o $(LINKERNAME)
 
 all:
 		@make $(NAME)

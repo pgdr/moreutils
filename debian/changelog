@@ -1,3 +1,10 @@
+moreutils (0.64) UNRELEASED; urgency=medium
+
+  * parallel: fix typo in usage message.
+  * Makefile: Propagate compiler and linker flags when building is_utf8.
+
+ -- Joey Hess <id@joeyh.name>  Fri, 29 Nov 2019 13:11:35 -0400
+
 moreutils (0.63) unstable; urgency=medium
 
   * vipe: Clean up temp file even when it exits with an error.

@@ -170,7 +170,7 @@ while (<>) {
 			|
 			\w{3}\s+\d{1,2}\s+\d\d:\d\d:\d\d # syslog form
 			|
-			\d\d\d[-:]\d\d[-:]\d\dT\d\d:\d\d:\d\d.\d+ # ISO-8601
+			\d\d\d\d[-:]\d\d[-:]\d\dT\d\d:\d\d:\d\d.\d+Z? # ISO-8601
 			|
 			(?:\w\w\w,?\s+)?	#       (optional Day)
 			\d+\s+\w\w\w\s+\d\d+\s+\d\d:\d\d:\d\d

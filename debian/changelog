@@ -4,6 +4,8 @@ moreutils (0.64) UNRELEASED; urgency=medium
   * Makefile: Propagate compiler and linker flags when building is_utf8.
   * ts: Fix parsing of ISO-8601 dates.
     Thanks, David Laban.
+  * parallel: Allow compiling with uClibc-ng, which does not have getloadavg.
+    Thanks, Rosen Penev
 
  -- Joey Hess <id@joeyh.name>  Fri, 29 Nov 2019 13:11:35 -0400
 

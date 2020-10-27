@@ -61,7 +61,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 		<para>
 			<command>ifdata</command> can be used to check for
 			the existence of a network interface, or to get
-			information abut the interface, such as its IP
+			information about the interface, such as its IP
 			address. Unlike <command>ifconfig</command> or
 			<command>ip</command>, <command>ifdata</command>
 			has simple to parse output that is designed to be

@@ -195,6 +195,13 @@ void if_hwaddr(const char *iface) {
 		return;
 
 	hwaddr = (unsigned char *)r.ifr_hwaddr.sa_data;
+
+	if (!hwaddr[0] && !hwaddr[1] && !hwaddr[2] &&
+	    !hwaddr[3] && !hwaddr[4] && !hwaddr[5]) {
+		fprintf(stderr, "Error: %s: no hardware address\n", iface);
+		exit(1);
+	}
+
 	printf("%02X:%02X:%02X:%02X:%02X:%02X",
 	       hwaddr[0], hwaddr[1], hwaddr[2], hwaddr[3], hwaddr[4], hwaddr[5]);
 }

@@ -155,7 +155,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 			<term><option>-ph</option></term>
 			<listitem>
 				<para>Prints the hardware address of the
-					interface.</para>
+                                        interface. Exit with a failure exit code
+                                        if there is not hardware address for the
+                                        given network interface.
+                                </para>
 			</listitem>
 		</varlistentry>
 

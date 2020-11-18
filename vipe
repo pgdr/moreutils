@@ -15,6 +15,18 @@ edit the data that is being piped between programs. Your editor will
 have the full data being piped from command1 loaded into it, and when you
 close it, that data will be piped into command2.
 
+=head1 ARGUMENTS
+
+vipe takes an argument --suffix that can be used to provide a file
+extension to the temp file generated.  This enables editors to provide
+syntax highlighting and activate modes.  For example, you can call vipe
+like
+
+  vipe --suffix csv
+
+to create a tempfile with .csv extensions which makes Emacs (or your
+favorite editor) launch in CSV major mode.
+
 =head1 ENVIRONMENT VARIABLES
 
 =over 4
@@ -40,10 +52,15 @@ Licensed under the GNU GPL.
 use warnings;
 use strict;
 use File::Temp q{tempfile};
+use Getopt::Long;
 
 $/=undef;
 
-my ($fh, $tmp)=tempfile(UNLINK => 1);
+my $suffix = "";
+GetOptions("suffix=s" => \$suffix) or die;
+$suffix = ".$suffix" if $suffix =~ m/^[^.]/;
+
+my ($fh, $tmp)=tempfile(UNLINK => 1, SUFFIX => $suffix);
 die "cannot create tempfile" unless $fh;
 print ($fh <STDIN>) || die "write temp: $!";
 close $fh;

@@ -57,7 +57,9 @@ use Getopt::Long;
 $/=undef;
 
 my $suffix = "";
-GetOptions("suffix=s" => \$suffix) or die;
+if (! GetOptions("suffix=s" => \$suffix)) {
+	die "Usage: $0 [--suffix=extension]\n";
+}
 $suffix = ".$suffix" if $suffix =~ m/^[^.]/;
 
 my ($fh, $tmp)=tempfile(UNLINK => 1, SUFFIX => $suffix);

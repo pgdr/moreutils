@@ -1,4 +1,4 @@
-moreutils (0.65) UNRELEASED; urgency=medium
+moreutils (0.65) unstable; urgency=medium
 
   * vipe: Added --suffix option.
     Thanks, Pål Grønås Drange.
@@ -6,7 +6,7 @@ moreutils (0.65) UNRELEASED; urgency=medium
     (Closes: #386755)
     Thanks, Nicolas Schier
 
- -- Joey Hess <id@joeyh.name>  Thu, 19 Nov 2020 11:06:09 -0400
+ -- Joey Hess <id@joeyh.name>  Sat, 02 Jan 2021 12:24:51 -0400
 
 moreutils (0.64) unstable; urgency=medium
 

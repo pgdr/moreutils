@@ -2,6 +2,9 @@ moreutils (0.65) UNRELEASED; urgency=medium
 
   * vipe: Added --suffix option.
     Thanks, Pål Grønås Drange.
+  * ifdata: fail when -ph is given but no hwaddr is available 
+    (Closes: #386755)
+    Thanks, Nicolas Schier
 
  -- Joey Hess <id@joeyh.name>  Thu, 19 Nov 2020 11:06:09 -0400
 

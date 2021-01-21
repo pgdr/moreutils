@@ -31,6 +31,10 @@ install:
 	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1
 	install $(MANS) $(DESTDIR)$(PREFIX)/share/man/man1
 
+uninstall:
+	for i in $(BINS) $(PERLSCRIPTS); do rm -f $(DESTDIR)$(PREFIX)/bin/$$i; done
+	for i in $(MANS); do rm -f $(DESTDIR)$(PREFIX)/share/man/man1/$$i; done
+
 check: isutf8
 	./is_utf8/test.sh
 

@@ -1,3 +1,12 @@
+moreutils (0.66) UNRELEASED; urgency=medium
+
+  * vipe: When no output is piped into vipe, and stdin is connected to
+    the terminal, don't read from stdin before opening the editor.
+    This allows eg: vipe | command
+    Thanks, Florian Pensec
+
+ -- Joey Hess <id@joeyh.name>  Thu, 04 Feb 2021 16:27:16 -0400
+
 moreutils (0.65) unstable; urgency=medium
 
   * vipe: Added --suffix option.

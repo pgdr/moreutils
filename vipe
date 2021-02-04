@@ -64,7 +64,9 @@ $suffix = ".$suffix" if $suffix =~ m/^[^.]/;
 
 my ($fh, $tmp)=tempfile(UNLINK => 1, SUFFIX => $suffix);
 die "cannot create tempfile" unless $fh;
-print ($fh <STDIN>) || die "write temp: $!";
+if (! -t STDIN) {
+	print ($fh <STDIN>) || die "write temp: $!";
+}
 close $fh;
 close STDIN;
 open(STDIN, "</dev/tty") || die "reopen stdin: $!";

@@ -4,6 +4,8 @@ moreutils (0.66) UNRELEASED; urgency=medium
     the terminal, don't read from stdin before opening the editor.
     This allows eg: vipe | command
     Thanks, Florian Pensec
+  * chronic: With -v, flush stdout after printing "STDERR" header.
+    Thanks, Adam Sjøgren
 
  -- Joey Hess <id@joeyh.name>  Thu, 04 Feb 2021 16:27:16 -0400
 

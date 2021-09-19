@@ -29,7 +29,7 @@ install:
 	install $(PERLSCRIPTS) $(DESTDIR)$(PREFIX)/bin
 
 	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1
-	install $(MANS) $(DESTDIR)$(PREFIX)/share/man/man1
+	install -m 644 $(MANS) $(DESTDIR)$(PREFIX)/share/man/man1
 
 uninstall:
 	for i in $(BINS) $(PERLSCRIPTS); do rm -f $(DESTDIR)$(PREFIX)/bin/$$i; done

@@ -79,7 +79,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	<refsect1>
 		<title>EXAMPLE</title>
 		<cmdsynopsis>
-			<command>find . -name core | ifne mail -s "Core files found" root</command>
+			<command>find . -name core | ifne mail -E 'set escape' -s "Core files found" root</command>
 		</cmdsynopsis>
 	</refsect1>
 

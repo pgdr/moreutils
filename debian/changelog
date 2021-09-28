@@ -2,6 +2,8 @@ moreutils (0.67) UNRELEASED; urgency=medium
 
   * Makefile: Install man pages without executable bit.
     Thanks, meator
+  * ifne.1: Improve example that pipes to mail to avoid escape
+    sequences.
 
  -- Joey Hess <id@joeyh.name>  Sun, 19 Sep 2021 09:30:45 -0400
 

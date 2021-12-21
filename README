@@ -19,9 +19,14 @@ zrun: automatically uncompress arguments to command
 
 Its web page is here: http://joeyh.name/code/moreutils/
 
-Your suggestions of additional tools to add to this collection are
-appreciated. The web page lists some that are under consideration but
-have not yet been included, I also welcome feedback on which of these to
-include.
+This collection is closed at this time for suggestions of additional tools
+to add to it. The web page lists a bunch that have been suggested,
+and I have a mailbox full of others. Sorry to all who have sent
+contributions without a reply. 
+
+If you would like to take up editorial responsibility for adding tools, as
+well as take over maintenance of moreutils, please contact me. In the
+meantime, this project is still being maintained by me, and patches and
+suggestions for improvements to exsting tools is still welcome.
 
 -- Joey Hess <id@joeyh.name>

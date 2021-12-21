@@ -1,11 +1,14 @@
-moreutils (0.67) UNRELEASED; urgency=medium
+moreutils (0.67) unstable; urgency=medium
 
+  * README: Formalize that I am not adding new tools to moreutils,
+    and have not for a long while. This package needs someone new to
+    take over editorial responsibility.
   * Makefile: Install man pages without executable bit.
     Thanks, meator
   * ifne.1: Improve example that pipes to mail to avoid escape
     sequences.
 
- -- Joey Hess <id@joeyh.name>  Sun, 19 Sep 2021 09:30:45 -0400
+ -- Joey Hess <id@joeyh.name>  Tue, 21 Dec 2021 15:34:32 -0400
 
 moreutils (0.66) unstable; urgency=medium
 

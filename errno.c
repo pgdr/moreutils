@@ -123,7 +123,7 @@ search_all(int num_words, char **words)
         search(num_words, words);
     }
 
-    fclose(f);
+    pclose(f);
 }
 
 

@@ -1,3 +1,10 @@
+moreutils (0.68) UNRELEASED; urgency=medium
+
+  * popen: Use pclose, fixing compile warning.
+    Thanks, Mikel Olasagasti Uranga
+
+ -- Joey Hess <id@joeyh.name>  Wed, 18 May 2022 12:47:28 -0400
+
 moreutils (0.67) unstable; urgency=medium
 
   * README: Formalize that I am not adding new tools to moreutils,

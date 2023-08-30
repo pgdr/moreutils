@@ -123,7 +123,7 @@ my $c=0;
 foreach (@dir) {
 	next if /^(.*\/)?\.$/ || /^(.*\/)?\.\.$/;
 	$item{++$c}=$_;
-	print OUT "$c\t$_\n";
+	printf OUT "%04d\t%s\n", $c, $_;
 }
 @dir=();
 close OUT || die "$0: cannot write ".$tmp->filename.": $!\n";

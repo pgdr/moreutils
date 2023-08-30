@@ -2,6 +2,9 @@ moreutils (0.68) UNRELEASED; urgency=medium
 
   * popen: Use pclose, fixing compile warning.
     Thanks, Mikel Olasagasti Uranga
+  * vidir: Zero pad line numbers to work better when used with
+    a small tab size such as 2.
+    Thanks, Johan Grande
 
  -- Joey Hess <id@joeyh.name>  Wed, 18 May 2022 12:47:28 -0400
 

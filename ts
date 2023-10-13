@@ -66,7 +66,7 @@ GetOptions(
 	"i" => \$inc,
 	"s" => \$sincestart,
 	"m" => \$mono
-) || die "usage: ts [-r] [-i | -s] [-m] [format]\n";
+) && @ARGV <= 1 or die "usage: ts [-r] [-i | -s] [-m] [format]\n";
 
 if ($rel) {
 	eval q{
@@ -110,7 +110,7 @@ else {
 }
 
 
-while (<>) {
+while (<STDIN>) {
 	if (! $rel) {
 		if ($hires) {
 			my $f=$format;

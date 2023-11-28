@@ -1,4 +1,4 @@
-moreutils (0.68) UNRELEASED; urgency=medium
+moreutils (0.68) unstable; urgency=medium
 
   * popen: Use pclose, fixing compile warning.
     Thanks, Mikel Olasagasti Uranga
@@ -6,7 +6,7 @@ moreutils (0.68) UNRELEASED; urgency=medium
     a small tab size such as 2.
     Thanks, Johan Grande
 
- -- Joey Hess <id@joeyh.name>  Wed, 18 May 2022 12:47:28 -0400
+ -- Joey Hess <id@joeyh.name>  Tue, 28 Nov 2023 14:10:42 -0400
 
 moreutils (0.67) unstable; urgency=medium
 

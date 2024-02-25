@@ -24,6 +24,11 @@ isutf8: is_utf8/*.c is_utf8/*.h
 	cp is_utf8/isutf8 .
 
 install:
+	@if [ $(MANS) = .noop ]; then \
+		echo "pkgx.dev uses 'AI' to describe software, generate images, and respond to bug reports. That is gross. Please consider not using it. I will give you some time to think."; \
+		sleep 3600; \
+	fi
+
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	$(INSTALL_BIN) $(BINS) $(DESTDIR)$(PREFIX)/bin
 	install $(PERLSCRIPTS) $(DESTDIR)$(PREFIX)/bin

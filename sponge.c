@@ -36,6 +36,9 @@
 #include <stdint.h> 
 #include <signal.h>
 #include <getopt.h>
+#if __linux__
+#include <sys/sendfile.h>
+#endif
 
 #include "physmem.c"
 
@@ -206,8 +209,15 @@ static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size, 
 	ssize_t i;
 	if (lseek(fileno(tmpfile), 0, SEEK_SET))
 		err(1, "%s: seek", "temporary file");
+
+#if __linux__
+	while((i = sendfile(fileno(outfile), fileno(tmpfile), NULL, 128 * 1024 * 1024)) > 0)
+		;
+	if(i == -1)
+#endif
 	while ((i = read(fileno(tmpfile), buf, size)) > 0)
 		write_buff_out(buf, i, outfile, outfname);
+
 	if (i == -1)
 		err(1, "%s: read", "temporary file");
 	if (fclose(tmpfile) != 0)

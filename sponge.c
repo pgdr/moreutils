@@ -188,21 +188,16 @@ void trapsignals (void) {
 #endif
 }
 
-static void write_buff_tmp(char* buff, size_t length, FILE *fd) {
-	if (fwrite(buff, length, 1, fd) < 1)
-		err(1, "%s: write", "temporary file");
-}
-		
-static void write_buff_tmp_finish (char* buff, size_t length, FILE *fd) {
-	if (length) 
-		write_buff_tmp(buff, length, fd);
-	if (fflush(fd) != 0)
-		err(1, "%s: flush", "temporary file");
-}
-
-static void write_buff_out (char* buff, size_t length, FILE *fd, const char *fname) {
+static void write_buff (char* buff, size_t length, FILE *fd, const char *fname) {
 	if (fwrite(buff, length, 1, fd) < 1)
 		err(1, "%s: write", fname);
+}
+
+static void write_buff_tmp_finish (char* buff, size_t length, FILE *fd) {
+	if (length)
+		write_buff(buff, length, fd, "temporary file");
+	if (fflush(fd) != 0)
+		err(1, "%s: flush", "temporary file");
 }
 
 static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size, const char *outfname) {
@@ -216,7 +211,7 @@ static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size, 
 	if(i == -1)
 #endif
 	while ((i = read(fileno(tmpfile), buf, size)) > 0)
-		write_buff_out(buf, i, outfile, outfname);
+		write_buff(buf, i, outfile, outfname);
 
 	if (i == -1)
 		err(1, "%s: read", "temporary file");
@@ -299,7 +294,7 @@ int main (int argc, char **argv) {
 			bufused = bufused+i;
 			if (bufused == bufsize) {
 				if ((bufsize*2) >= mem_available) {
-					write_buff_tmp(bufstart, bufused, tmpfile);
+					write_buff(bufstart, bufused, tmpfile, "temporary file");
 					bufused = 0;
 					tmpfile_used = 1;
 				}
@@ -359,7 +354,7 @@ int main (int argc, char **argv) {
 		}
 		else if (bufused) {
 			/* buffer direct to stdout, no tmpfile */
-			write_buff_out(bufstart, bufused, stdout, "stdout");
+			write_buff(bufstart, bufused, stdout, "stdout");
 		}
 	}
 

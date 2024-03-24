@@ -333,7 +333,7 @@ int main (int argc, char **argv) {
 		mode_t mode;
 		struct stat statbuf;
 		int exists = (lstat(outname, &statbuf) == 0);
-		int regfile = exists && S_ISREG(statbuf.st_mode) && ! S_ISLNK(statbuf.st_mode);
+		int regfile = exists && S_ISREG(statbuf.st_mode);
 
 		if (append && regfile) {
 			char *tmpbuf = malloc(bufsize);

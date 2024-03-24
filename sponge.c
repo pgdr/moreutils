@@ -38,7 +38,7 @@
 
 #include "physmem.c"
 
-#define BUFF_SIZE           8192
+#define BUFF_SIZE           (64 * 1024)
 #define MIN_SPONGE_SIZE     BUFF_SIZE
 char *tmpname = NULL;
 

@@ -202,19 +202,14 @@ static void write_buff_out (char* buff, size_t length, FILE *fd, const char *fna
 		err(1, "%s: write", fname);
 }
 
-static void copy_file (FILE *infile, FILE *outfile, char *buf, size_t size, const char *infname, const char *outfname) {
-	ssize_t i;
-	while ((i = read(fileno(infile), buf, size)) > 0) {
-		write_buff_out(buf, i, outfile, outfname);
-	}
-	if (i == -1)
-		err(1, "%s: read", infname);
-}
-
 static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size, const char *outfname) {
+	ssize_t i;
 	if (lseek(fileno(tmpfile), 0, SEEK_SET))
 		err(1, "%s: seek", "temporary file");
-	copy_file(tmpfile, outfile, buf, size, "temporary file", outfname);
+	while ((i = read(fileno(tmpfile), buf, size)) > 0)
+		write_buff_out(buf, i, outfile, outfname);
+	if (i == -1)
+		err(1, "%s: read", "temporary file");
 	if (fclose(tmpfile) != 0)
 		err(1, "%s: close", "temporary file");
 	if (fclose(outfile) != 0)

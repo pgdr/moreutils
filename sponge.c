@@ -242,7 +242,6 @@ FILE *open_tmpfile (void) {
 	struct cs_status cs;
 	int tmpfd;
 	FILE *tmpfile;
-	mode_t mask;
 	char *tmpdir;
 	char const * const template="%s/sponge.XXXXXX";
 
@@ -258,9 +257,7 @@ FILE *open_tmpfile (void) {
 		exit(1);
 	}
 	sprintf(tmpname, template, tmpdir);
-	mask=umask(077);
 	tmpfd = mkstemp(tmpname);
-	umask(mask);
 	atexit(onexit_cleanup); // solaris on_exit(onexit_cleanup, 0);
 	cs_leave(cs);
 

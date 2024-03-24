@@ -336,13 +336,13 @@ int main (int argc, char **argv) {
 		int regfile = exists && S_ISREG(statbuf.st_mode);
 
 		if (append && regfile) {
-			char *tmpbuf = malloc(bufsize);
+			char *tmpbuf = malloc(BUFF_SIZE);
 			if (!tmpbuf) {
 				perror("failed to allocate memory");
 				exit(1);
 			}
 			outfile = fopen(outname, "r");
-			copy_file(outfile, tmpfile, tmpbuf, bufsize);
+			copy_file(outfile, tmpfile, tmpbuf, BUFF_SIZE);
 			fclose(outfile);
 			free(tmpbuf);
 		}

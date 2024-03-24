@@ -344,6 +344,7 @@ int main (int argc, char **argv) {
 			outfile = fopen(outname, "r");
 			copy_file(outfile, tmpfile, tmpbuf, bufsize);
 			fclose(outfile);
+			free(tmpbuf);
 		}
 		
 		write_buff_tmp_finish(bufstart, bufused, tmpfile);

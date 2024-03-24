@@ -189,13 +189,12 @@ void trapsignals (void) {
 }
 
 static void write_buff (char* buff, size_t length, FILE *fd, const char *fname) {
-	if (fwrite(buff, length, 1, fd) < 1)
+	if (fwrite(buff, 1, length, fd) != length)
 		err(1, "%s: write", fname);
 }
 
 static void write_buff_tmp_finish (char* buff, size_t length, FILE *fd) {
-	if (length)
-		write_buff(buff, length, fd, "temporary file");
+	write_buff(buff, length, fd, "temporary file");
 	if (fflush(fd) != 0)
 		err(1, "%s: flush", "temporary file");
 }

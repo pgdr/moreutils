@@ -341,9 +341,10 @@ int main (int argc, char **argv) {
 				perror("failed to allocate memory");
 				exit(1);
 			}
-			outfile = fopen(outname, "r");
-			copy_file(outfile, tmpfile, tmpbuf, BUFF_SIZE);
-			fclose(outfile);
+			if((outfile = fopen(outname, "r"))) {
+				copy_file(outfile, tmpfile, tmpbuf, BUFF_SIZE);
+				fclose(outfile);
+			}
 			free(tmpbuf);
 		}
 		

@@ -361,7 +361,7 @@ int main (int argc, char **argv) {
 			umask(mask);
 			mode = 0666 & ~mask;
 		}
-		if (chmod(tmpname, mode) != 0) {
+		if (fchmod(fileno(tmpfile), mode) != 0) {
 			perror("chmod");
 			exit(1);
 		}

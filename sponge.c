@@ -20,6 +20,7 @@
  *
  */
 
+#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -185,57 +186,39 @@ void trapsignals (void) {
 }
 
 static void write_buff_tmp(char* buff, size_t length, FILE *fd) {
-	if (fwrite(buff, length, 1, fd) < 1) {
-		perror("error writing buffer to temporary file");
-		fclose(fd);
-		exit(1);
-	}
+	if (fwrite(buff, length, 1, fd) < 1)
+		err(1, "%s: write", "temporary file");
 }
 		
 static void write_buff_tmp_finish (char* buff, size_t length, FILE *fd) {
 	if (length) 
 		write_buff_tmp(buff, length, fd);
-	if (fflush(fd) != 0) {
-		perror("fflush");
-		exit(1);
-	}
+	if (fflush(fd) != 0)
+		err(1, "%s: flush", "temporary file");
 }
 
-static void write_buff_out (char* buff, size_t length, FILE *fd) {
-	if (fwrite(buff, length, 1, fd) < 1) {
-		perror("error writing buffer to output file");
-		fclose(fd);
-		exit(1);
-	}
+static void write_buff_out (char* buff, size_t length, FILE *fd, const char *fname) {
+	if (fwrite(buff, length, 1, fd) < 1)
+		err(1, "%s: write", fname);
 }
 
-static void copy_file (FILE *infile, FILE *outfile, char *buf, size_t size) {
+static void copy_file (FILE *infile, FILE *outfile, char *buf, size_t size, const char *infname, const char *outfname) {
 	ssize_t i;
 	while ((i = read(fileno(infile), buf, size)) > 0) {
-		write_buff_out(buf, i, outfile);
+		write_buff_out(buf, i, outfile, outfname);
 	}
-	if (i == -1) {
-		perror("read file");
-		fclose(infile);
-		exit(1);
-	}
+	if (i == -1)
+		err(1, "%s: read", infname);
 }
 
-static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size) {
-	if (lseek(fileno(tmpfile), 0, SEEK_SET)) {
-		perror("could to seek to start of file");
-		fclose(tmpfile);
-		exit(1);
-	}
-	copy_file(tmpfile, outfile, buf, size);
-	if (fclose(tmpfile) != 0) {
-		perror("read temporary file");
-		exit(1);
-	}
-	if (fclose(outfile) != 0) {
-		perror("error writing buffer to output file");
-		exit(1);
-	}
+static void copy_tmpfile (FILE *tmpfile, FILE *outfile, char *buf, size_t size, const char *outfname) {
+	if (lseek(fileno(tmpfile), 0, SEEK_SET))
+		err(1, "%s: seek", "temporary file");
+	copy_file(tmpfile, outfile, buf, size, "temporary file", outfname);
+	if (fclose(tmpfile) != 0)
+		err(1, "%s: close", "temporary file");
+	if (fclose(outfile) != 0)
+		err(1, "%s: flush", outfname);
 }
 
 FILE *open_tmpfile (void) {
@@ -252,24 +235,18 @@ FILE *open_tmpfile (void) {
 		tmpdir = "/tmp";
 	/* Subtract 2 for `%s' and add 1 for the trailing NULL. */
 	tmpname=malloc(strlen(tmpdir) + strlen(template) - 2 + 1);
-	if (! tmpname) {
-		perror("failed to allocate memory");
-		exit(1);
-	}
+	if (! tmpname)
+		err(1, NULL);
 	sprintf(tmpname, template, tmpdir);
 	tmpfd = mkstemp(tmpname);
 	atexit(onexit_cleanup); // solaris on_exit(onexit_cleanup, 0);
 	cs_leave(cs);
 
-	if (tmpfd < 0) {
-		perror("mkstemp failed");
-		exit(1);
-	}
+	if (tmpfd < 0)
+		err(1, "mkstemp");
 	tmpfile = fdopen(tmpfd, "w+");
-	if (! tmpfile) {
-		perror("fdopen");
-		exit(1);
-	}
+	if (! tmpfile)
+		err(1, "fdopen");
 	return tmpfile;
 }
 
@@ -298,10 +275,8 @@ int main (int argc, char **argv) {
 	
 	tmpfile = open_tmpfile();
 	bufstart = buf = malloc(bufsize);
-	if (!buf) {
-		perror("failed to allocate memory");
-		exit(1);
-	}
+	if (!buf)
+		err(1, NULL);
 	while ((i = read(0, buf, bufsize - bufused)) > 0) {
 		bufused = bufused+i;
 		if (bufused == bufsize) {
@@ -313,18 +288,14 @@ int main (int argc, char **argv) {
 			else {
 				bufsize *= 2;
 				bufstart = realloc(bufstart, bufsize);
-				if (!bufstart) {
-					perror("failed to realloc memory");
-					exit(1);
-				}
+				if (!bufstart)
+					err(1, NULL);
 			}
 		}
 		buf = bufstart + bufused;
 	}
-	if (i < 0) {
-		perror("failed to read from stdin");
-		exit(1);
-	}
+	if (i < 0)
+		err(1, "%s: read", "stdin");
 
 	if (outname) {
 		mode_t mode;
@@ -334,12 +305,10 @@ int main (int argc, char **argv) {
 
 		if (append && regfile) {
 			char *tmpbuf = malloc(BUFF_SIZE);
-			if (!tmpbuf) {
-				perror("failed to allocate memory");
-				exit(1);
-			}
+			if (!tmpbuf)
+				err(1, NULL);
 			if((outfile = fopen(outname, "r"))) {
-				copy_file(outfile, tmpfile, tmpbuf, BUFF_SIZE);
+				copy_file(outfile, tmpfile, tmpbuf, BUFF_SIZE, outname, "temporary file");
 				fclose(outfile);
 			}
 			free(tmpbuf);
@@ -358,10 +327,8 @@ int main (int argc, char **argv) {
 			umask(mask);
 			mode = 0666 & ~mask;
 		}
-		if (fchmod(fileno(tmpfile), mode) != 0) {
-			perror("chmod");
-			exit(1);
-		}
+		if (fchmod(fileno(tmpfile), mode) != 0)
+			err(1, "%s: chmod", "temporary file");
 
 		/* If it's a regular file, or does not yet exist,
 		 * attempt a fast rename of the temp file. */
@@ -369,24 +336,22 @@ int main (int argc, char **argv) {
 		    rename(tmpname, outname) == 0) {
 			tmpname=NULL; /* don't try to cleanup tmpname */
 		}
-		else {	
+		else {
 			/* Fall back to slow copy. */
 			outfile = fopen(outname, "w");
-			if (!outfile) {
-				perror("error opening output file");
-				exit(1);
-			}
-			copy_tmpfile(tmpfile, outfile, bufstart, bufsize);
+			if (!outfile)
+				err(1, "%s", outname);
+			copy_tmpfile(tmpfile, outfile, bufstart, bufsize, outname);
 		}
 	}
 	else {
 		if (tmpfile_used) {
 			write_buff_tmp_finish(bufstart, bufused, tmpfile);
-			copy_tmpfile(tmpfile, stdout, bufstart, bufsize);
+			copy_tmpfile(tmpfile, stdout, bufstart, bufsize, "stdout");
 		}
 		else if (bufused) {
 			/* buffer direct to stdout, no tmpfile */
-			write_buff_out(bufstart, bufused, stdout);
+			write_buff_out(bufstart, bufused, stdout, "stdout");
 		}
 	}
 

@@ -277,43 +277,46 @@ int main (int argc, char **argv) {
 	bufstart = buf = malloc(bufsize);
 	if (!buf)
 		err(1, NULL);
-	while ((i = read(0, buf, bufsize - bufused)) > 0) {
-		bufused = bufused+i;
-		if (bufused == bufsize) {
-			if ((bufsize*2) >= mem_available) {
-				write_buff_tmp(bufstart, bufused, tmpfile);
-				bufused = 0;
-				tmpfile_used = 1;
+
+	int toread[] = {-1, 0};
+	const char * toread_names[] = {outname, "stdin"};
+	struct stat statbuf;
+	int exists = outname && (lstat(outname, &statbuf) == 0);
+	int regfile = exists && S_ISREG(statbuf.st_mode);
+	if (append && regfile)
+		toread[0] = open(outname, O_RDONLY);
+
+	for (int idx = 0; idx < sizeof(toread) / sizeof(*toread); ++idx) {
+		if (toread[idx] == -1)
+			continue;
+
+		while ((i = read(toread[idx], buf, bufsize - bufused)) > 0) {
+			bufused = bufused+i;
+			if (bufused == bufsize) {
+				if ((bufsize*2) >= mem_available) {
+					write_buff_tmp(bufstart, bufused, tmpfile);
+					bufused = 0;
+					tmpfile_used = 1;
+				}
+				else {
+					bufsize *= 2;
+					bufstart = realloc(bufstart, bufsize);
+					if (!bufstart)
+						err(1, NULL);
+				}
 			}
-			else {
-				bufsize *= 2;
-				bufstart = realloc(bufstart, bufsize);
-				if (!bufstart)
-					err(1, NULL);
-			}
+			buf = bufstart + bufused;
 		}
-		buf = bufstart + bufused;
+		if (i < 0)
+			err(1, "%s: read", toread_names[idx]);
 	}
-	if (i < 0)
-		err(1, "%s: read", "stdin");
+
+	if (toread[0] != -1)
+		close(toread[0]);
 
 	if (outname) {
 		mode_t mode;
-		struct stat statbuf;
-		int exists = (lstat(outname, &statbuf) == 0);
-		int regfile = exists && S_ISREG(statbuf.st_mode);
 
-		if (append && regfile) {
-			char *tmpbuf = malloc(BUFF_SIZE);
-			if (!tmpbuf)
-				err(1, NULL);
-			if((outfile = fopen(outname, "r"))) {
-				copy_file(outfile, tmpfile, tmpbuf, BUFF_SIZE, outname, "temporary file");
-				fclose(outfile);
-			}
-			free(tmpbuf);
-		}
-		
 		write_buff_tmp_finish(bufstart, bufused, tmpfile);
 
 		/* Set temp file mode to match either

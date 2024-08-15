@@ -120,10 +120,11 @@ open (OUT, ">".$tmp->filename) || die "$0: cannot create ".$tmp->filename.": $!\
 
 my %item;
 my $c=0;
+my $l = $#dir =~ tr/0-9//;
 foreach (@dir) {
 	next if /^(.*\/)?\.$/ || /^(.*\/)?\.\.$/;
 	$item{++$c}=$_;
-	printf OUT "%04d\t%s\n", $c, $_;
+	printf OUT "%0*d\t%s\n", $l, $c, $_;
 }
 @dir=();
 close OUT || die "$0: cannot write ".$tmp->filename.": $!\n";

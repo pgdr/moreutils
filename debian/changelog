@@ -1,3 +1,11 @@
+moreutils (0.70) UNRELEASED; urgency=medium
+
+  * vidir: Improve zero padding to support larger directories,
+    and also avoid unncessary padding.
+    Thanks, Martin Kühl
+
+ -- Joey Hess <id@joeyh.name>  Thu, 15 Aug 2024 16:27:13 -0400
+
 moreutils (0.69) unstable; urgency=medium
 
   * Makefile: Warn users of pkgx.dev about their poor life choices.

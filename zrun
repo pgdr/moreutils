@@ -60,10 +60,10 @@ my %child;
 foreach my $argument (@ARGV) {
 	if ($argument =~ m{^(.*/)?([^/]*)\.(gz|Z|bz2|xz|lzo|lzma|zst)$}s) {
 		my $suffix = "-$2";
-		my @preprocess = $3 eq "bz2"  ? qw(bzip2 -d -c) : 
-				 $3 eq "xz"   ? qw(xz -d -c)    : 
-				 $3 eq "lzo"  ? qw(lzop -d -c)  : 
-				 $3 eq "lzma" ? qw(lzma -d -c)  : 
+		my @preprocess = $3 eq "bz2"  ? qw(bzip2 -d -c) :
+				 $3 eq "xz"   ? qw(xz -d -c)    :
+				 $3 eq "lzo"  ? qw(lzop -d -c)  :
+				 $3 eq "lzma" ? qw(lzma -d -c)  :
 				 $3 eq "zst"  ? qw(zstd -d -c)  : qw(gzip -d -c);
 
 		my ($fh, $tmpname) = tempfile(SUFFIX => $suffix,

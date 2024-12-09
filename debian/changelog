@@ -5,6 +5,8 @@ moreutils (0.70) UNRELEASED; urgency=medium
     Thanks, Martin Kühl
   * zrun: Add support for zstd compression
     Thanks, Yannick Le Pennec
+  * ts: Do not accept extra args and always read from stdin (Closes: #1041291)
+    Thanks, Zefram
 
  -- Joey Hess <id@joeyh.name>  Thu, 15 Aug 2024 16:27:13 -0400
 

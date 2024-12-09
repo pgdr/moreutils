@@ -1,4 +1,4 @@
-moreutils (0.70) UNRELEASED; urgency=medium
+moreutils (0.70) unstable; urgency=medium
 
   * vidir: Improve zero padding to support larger directories,
     and also avoid unncessary padding.
@@ -8,7 +8,7 @@ moreutils (0.70) UNRELEASED; urgency=medium
   * ts: Do not accept extra args and always read from stdin (Closes: #1041291)
     Thanks, Zefram
 
- -- Joey Hess <id@joeyh.name>  Thu, 15 Aug 2024 16:27:13 -0400
+ -- Joey Hess <id@joeyh.name>  Mon, 09 Dec 2024 13:59:48 -0400
 
 moreutils (0.69) unstable; urgency=medium
 

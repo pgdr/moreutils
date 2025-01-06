@@ -1,3 +1,10 @@
+moreutils (0.71) UNRELEASED; urgency=medium
+
+  * ts: Use the last provided switch if both -i and -s are provided
+    Thanks, Mohammed Sadiq
+
+ -- Joey Hess <id@joeyh.name>  Mon, 06 Jan 2025 16:39:26 -0400
+
 moreutils (0.70) unstable; urgency=medium
 
   * vidir: Improve zero padding to support larger directories,

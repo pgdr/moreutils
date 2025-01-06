@@ -63,8 +63,8 @@ my $mono=0;
 use Getopt::Long;
 GetOptions(
 	"r" => \$rel,
-	"i" => \$inc,
-	"s" => \$sincestart,
+	"i" => sub { $inc=1; $sincestart=0 },
+	"s" => sub { $inc=0; $sincestart=1 },
 	"m" => \$mono
 ) && @ARGV <= 1 or die "usage: ts [-r] [-i | -s] [-m] [format]\n";
 
